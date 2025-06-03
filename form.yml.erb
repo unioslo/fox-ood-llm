@@ -1,0 +1,90 @@
+---
+cluster: "fox"
+
+form:
+  - auto_accounts
+  - llm_model
+  - ec_cpus
+  - ec_mem
+  - ec_gpus
+
+attributes:
+
+  auto_accounts:
+    label: "Choose the Educloud project to run under:"
+    help: |
+     <small>If you are unsure, ask the project principal</small>
+
+  ec_cpus:
+    widget: "hidden_field"
+    label: "Number of CPU cores:"
+    cacheable: false
+    value: "8"
+
+  ec_gpus:
+    widget: "hidden_field"
+    label: "Number of GPUs:"
+    cacheable: false
+    value: "0"
+
+  ec_mem:
+    widget: "hidden_field"
+    label: "RAM (in GB):"
+    cacheable: false
+    value: "8"
+
+  llm_model:
+    label: "Large Language Model"
+    widget: "select"
+    value: "gemma-3-12b_cpu"
+    help: |
+     <small>
+     <ul>
+      <li>
+        <b>Thinking</b>: A thinking model is good at solving 
+        complex problems by exploring different options 
+        before providing an answer
+      </li>
+      <li>
+        <b>Vision</b>: The model can analyze pictures and PDFs
+      </li>
+     </ul></small>
+    display: true
+    options:
+      - [
+          "Small - Thinking (Qwen3-30B-A3B)", "qwen3-30b-a3b_cpu",
+          data-set-ec-cpus:  "8",
+          data-set-ec-mem:  "24",
+          data-set-ec-gpus:  "0",
+        ]
+      - [
+          "Medium - Vision, Multiple Languages (Gemma-3 12b)", "gemma-3_12b_cpu",
+          data-set-ec-cpus:  "16",
+          data-set-ec-mem:  "12",
+          data-set-ec-gpus:  "0",
+        ]
+      - [
+          "Medium - Medical Images, Vision (Medgemma 4B)", "medgemma_4b_cpu",
+          data-set-ec-cpus:  "12",
+          data-set-ec-mem:  "12",
+          data-set-ec-gpus:  "0",
+        ]
+      - [
+          "Large - Vision, Multiple Languages (Gemma-3 27B)", "gemma-3_27b_gpu",
+          data-set-ec-cpus:  "2",
+          data-set-ec-mem:  "64",
+          data-set-ec-gpus:  "1",
+        ]
+      - [
+          "Large - Medical Images, Vision (Medgemma 4B)", "medgemma_4b_gpu",
+          data-set-ec-cpus:  "2",
+          data-set-ec-mem:  "12",
+          data-set-ec-gpus:  "1",
+        ]
+      - [
+          "Large - Thinking (Qwen3 14B)", "qwen3_14b_gpu",
+          data-set-ec-cpus:  "2",
+          data-set-ec-mem:  "32",
+          data-set-ec-gpus:  "1",
+        ]
+      

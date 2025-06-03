@@ -1,0 +1,19 @@
+batch_connect:
+  template: "basic"
+
+script:
+  job_name: "OOD Llama.cpp"
+  native: [
+            "--time=01:30:00",
+            "-c", "<%= ec_cpus.blank?  ? 1 : ec_cpus.to_i %>",
+           <%- if ec_gpus.to_i > 0 -%>
+              "--partition=accel",
+              "--gpus=<%= ec_gpus.to_i %>",
+            <%- else -%>
+                "--partition=normal",
+            <%- end -%>
+
+            <%- if not ec_mem.blank? -%>
+                "--mem", "<%= ec_mem.to_i %>G"
+            <%- end -%>
+          ]

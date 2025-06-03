@@ -1,0 +1,13 @@
+---
+name: Large Language Model
+category: Interactive Apps
+subcategory: AI
+role: batch_connect
+description: |
+        This app will launch an LLM with a webinterface on Fox.<br><br>
+
+        <hr>
+        <b>Choose job options:</b>
+
+tile:
+  sub_caption: "Large Language Model"

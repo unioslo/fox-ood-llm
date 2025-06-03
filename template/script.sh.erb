@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# Benchmark info
+echo "TIMING - Starting main script at: $(date)"
+
+# Set working directory to home directory
+cd "${HOME}"
+
+# Purge the module environment to avoid conflicts
+module purge
+
+# Benchmark info
+echo "TIMING - Starting llama.cpp at: $(date)"
+
+
+
+llm_model=<%= context.llm_model -%>
+
+echo $llm_model
+echo $host
+
+num_cpus=<%= context.ec_cpus -%>
+
+
+# TODO: move files to shared location and modify PATH
+oodllm_aux_dir=/fp/projects01/ec448/ood-llm-aux
+
+echo "Starting proxy..."
+oodproxy=${oodllm_aux_dir}/oodproxy/oodproxy
+${oodproxy} --target $SCRATCH/llamacpp.sock \
+            --listen ${host}:${port} &
+
+
+echo "Starting llama.cpp..."
+bash ${oodllm_aux_dir}/runllm.sh \
+  ${llm_model} \
+  --threads ${num_cpus}  \
+  --host $SCRATCH/llamacpp.sock
