@@ -1,8 +1,8 @@
 ---
-name: Large Language Model
+name: UiO Local LLM
 category: Interactive Apps
 subcategory: AI
 role: batch_connect
 description: |
-        This app will launch an LLM with a web interface on Fox.
+        This app will launch a Large Language Model (LLM) with a web interface on Fox.
 
