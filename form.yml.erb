@@ -34,55 +34,58 @@ attributes:
     value: "8"
 
   llm_model:
-    label: "Large Language Model"
+    label: "Large Language Model configuration"
     widget: "select"
-    value: "gemma-3-12b_cpu"
+    value: "qwen3-30b-a3b_cpu"
     help: |
      <small>
      <ul>
       <li>
-        <b>Thinking</b>: A thinking model is good at solving 
-        complex problems by exploring different options 
-        before providing an answer
+        <b>CPU/GPU</b>: Option to run on GPU for significantly faster response times, 
+        though GPU resources may be subject to availability constraints
       </li>
       <li>
-        <b>Vision</b>: The model can analyze pictures and PDFs
+        <b>Thinking</b>: Excels at solving complex problems by systematically evaluating 
+        multiple possibilities to deliver reasoned answers
+      </li>
+      <li>
+        <b>Vision</b>: Capable of processing and interpreting visual content in pictures and PDFs
       </li>
      </ul></small>
     display: true
     options:
       - [
-          "Small - Thinking (Qwen3-30B-A3B)", "qwen3-30b-a3b_cpu",
+          "[CPU] Thinking (Qwen3-30B-A3B)", "qwen3-30b-a3b_cpu",
           data-set-ec-cpus:  "8",
           data-set-ec-mem:  "24",
           data-set-ec-gpus:  "0",
         ]
       - [
-          "Medium - Vision, Multiple Languages (Gemma-3 12b)", "gemma-3_12b_cpu",
+          "[CPU] Vision, Multiple Languages (Gemma-3 12b)", "gemma-3_12b_cpu",
           data-set-ec-cpus:  "16",
           data-set-ec-mem:  "12",
           data-set-ec-gpus:  "0",
         ]
       - [
-          "Medium - Medical Images, Vision (Medgemma 4B)", "medgemma_4b_cpu",
+          "[CPU] Medical Images, Vision (Medgemma 4B)", "medgemma_4b_cpu",
           data-set-ec-cpus:  "12",
           data-set-ec-mem:  "12",
           data-set-ec-gpus:  "0",
         ]
       - [
-          "Large - Vision, Multiple Languages (Gemma-3 27B)", "gemma-3_27b_gpu",
+          "[GPU] Vision, Multiple Languages (Gemma-3 27B)", "gemma-3_27b_gpu",
           data-set-ec-cpus:  "2",
           data-set-ec-mem:  "64",
           data-set-ec-gpus:  "1",
         ]
       - [
-          "Large - Medical Images, Vision (Medgemma 4B)", "medgemma_4b_gpu",
+          "[GPU] Medical Images, Vision (Medgemma 4B)", "medgemma_4b_gpu",
           data-set-ec-cpus:  "2",
           data-set-ec-mem:  "12",
           data-set-ec-gpus:  "1",
         ]
       - [
-          "Large - Thinking (Qwen3 14B)", "qwen3_14b_gpu",
+          "[GPU] Thinking (Qwen3 14B)", "qwen3_14b_gpu",
           data-set-ec-cpus:  "2",
           data-set-ec-mem:  "32",
           data-set-ec-gpus:  "1",
