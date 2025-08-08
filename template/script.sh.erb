@@ -22,17 +22,19 @@ echo $host
 num_cpus=<%= context.ec_cpus -%>
 
 
-# TODO: move files to shared location and modify PATH
-oodllm_aux_dir=/cluster/opt/OOD/ood-llm-aux/
+oodllm_aux_version=20250617_2049b7a
+
+oodllm_aux_dir=/cluster/opt/OOD/ood-llm-aux/${oodllm_aux_version}
 
 echo "Starting proxy..."
 oodproxy=${oodllm_aux_dir}/oodproxy/oodproxy
-${oodproxy} --target $SCRATCH/llamacpp.sock \
-            --listen ${host}:${port} &
+${oodproxy} --listen ${host}:${port} \
+            --ipv4-range "193.156.40.0/22" \
+            --ipv6-range "2001:700:5800::/41" \
+            --model-script "
+              ${oodllm_aux_dir}/runllm.sh
+                ${llm_model}
+                --threads ${num_cpus}
+                --host /tmp/llamacpp.sock
+              "
 
-
-echo "Starting llama.cpp..."
-bash ${oodllm_aux_dir}/runllm.sh \
-  ${llm_model} \
-  --threads ${num_cpus}  \
-  --host $SCRATCH/llamacpp.sock
