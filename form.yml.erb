@@ -36,7 +36,7 @@ attributes:
   llm_model:
     label: "Large Language Model configuration"
     widget: "select"
-    value: "qwen3-30b-a3b_cpu"
+    value: "gpt-oss_20b_gpu"
     help: |
      <small>
      <ul>
@@ -54,40 +54,34 @@ attributes:
      </ul></small>
     display: true
     options:
-      - [
-          "[CPU] Thinking (Qwen3-30B-A3B)", "qwen3-30b-a3b_cpu",
-          data-set-ec-cpus:  "8",
-          data-set-ec-mem:  "24",
-          data-set-ec-gpus:  "0",
-        ]
-      - [
-          "[CPU] Vision, Multiple Languages (Gemma-3 12b)", "gemma-3_12b_cpu",
-          data-set-ec-cpus:  "16",
-          data-set-ec-mem:  "12",
-          data-set-ec-gpus:  "0",
-        ]
-      - [
-          "[CPU] Medical Images, Vision (Medgemma 4B)", "medgemma_4b_cpu",
-          data-set-ec-cpus:  "12",
-          data-set-ec-mem:  "12",
-          data-set-ec-gpus:  "0",
-        ]
-      - [
-          "[GPU] Vision, Multiple Languages (Gemma-3 27B)", "gemma-3_27b_gpu",
-          data-set-ec-cpus:  "2",
-          data-set-ec-mem:  "64",
-          data-set-ec-gpus:  "1",
-        ]
-      - [
-          "[GPU] Medical Images, Vision (Medgemma 4B)", "medgemma_4b_gpu",
-          data-set-ec-cpus:  "2",
-          data-set-ec-mem:  "12",
-          data-set-ec-gpus:  "1",
-        ]
-      - [
-          "[GPU] Thinking (Qwen3 14B)", "qwen3_14b_gpu",
-          data-set-ec-cpus:  "2",
-          data-set-ec-mem:  "32",
-          data-set-ec-gpus:  "1",
-        ]
-      
+    - [
+        "[GPU] Thinking (GPT-OSS 20B)", "gpt-oss_20b_gpu",
+        data-set-ec-cpus:  "2",
+        data-set-ec-mem:  "32",
+        data-set-ec-gpus:  "1",
+      ]
+    - [
+        "[GPU] Vision, Multiple Languages (Gemma-3 27B)", "gemma-3_27b_gpu",
+        data-set-ec-cpus:  "2",
+        data-set-ec-mem:  "64",
+        data-set-ec-gpus:  "1",
+      ]
+    - [
+        "[GPU] Medical Images, Vision (Medgemma 4B)", "medgemma_4b_gpu",
+        data-set-ec-cpus:  "2",
+        data-set-ec-mem:  "12",
+        data-set-ec-gpus:  "1",
+      ]
+    - [
+        "[CPU] Thinking (GPT-OSS 20B)", "gpt-oss_20b_cpu",
+        data-set-ec-cpus:  "12",
+        data-set-ec-mem:  "24",
+        data-set-ec-gpus:  "0",
+      ]
+    - [
+        "[CPU] Medical Images, Vision (Medgemma 4B)", "medgemma_4b_cpu",
+        data-set-ec-cpus:  "12",
+        data-set-ec-mem:  "12",
+        data-set-ec-gpus:  "0",
+      ]
+
