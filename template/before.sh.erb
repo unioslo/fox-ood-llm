@@ -35,6 +35,3 @@ port=$(find_port)
 # Generate SHA1 encrypted password (requires OpenSSL installed)
 export password="$(create_passwd 32)"
 export OODPROXY_PASSWORD=$password
-
-# The `$CONFIG_FILE` environment variable is exported as it is used in the main
-# `script.sh.erb` file when launching the Jupyter Notebook server.
