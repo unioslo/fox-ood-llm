@@ -4,4 +4,4 @@ category: Interactive Apps
 subcategory: AI
 role: batch_connect
 description: |
-	     This app launches a Large Language Model (LLM) with a web interface, running locally on Fox. Your data remains securely within Educloud, and the model is dedicated to your use, offering enhanced privacy. Please note that Educloud OnDemand supports data up to the Yellow classification level.
+    This app launches a Large Language Model (LLM) with a web interface, running locally on Fox. Your data remains securely within Educloud, and the model is dedicated to your use, offering enhanced privacy. Please note that Educloud OnDemand supports data up to the Yellow classification level.
