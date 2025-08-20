@@ -4,7 +4,7 @@ category: Interactive Apps
 subcategory: AI
 role: batch_connect
 description: |
-
+    <img class="img-fluid mx-auto d-block" src="/pun/sys/dashboard/apps/icon/fox-ood-llm/sys/sys" width="100px"/>
     <div class="alert alert-info">
     <p>This app launches a Large Language Model (LLM) with a web interface, running locally on Fox. Your data remains securely within Educloud, and the model is dedicated to your use, offering enhanced privacy.</p>
     <p>Please note that Educloud OnDemand supports data up to the <a href="https://www.uio.no/english/for-employees/support/research/funding/units/hf/imv/data-ethics/colors.html target="_blank""><b>Yellow level</b></a>.
