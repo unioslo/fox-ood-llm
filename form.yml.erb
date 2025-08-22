@@ -2,6 +2,7 @@
 cluster: "fox"
 
 form:
+  - ec_mail_on_start
   - auto_accounts
   - llm_model
   - ec_cpus
@@ -14,6 +15,13 @@ attributes:
     label: "Choose the Educloud project to run under:"
     help: |
      <small>If you are unsure, ask the project principal</small>
+
+  ec_mail_on_start:
+    label: "Send e-mail when session starts"
+    widget: "check_box"
+    value: "false"
+    help: |
+      <small>Using the e-mail your account is registered to</small>
 
   ec_cpus:
     widget: "hidden_field"
