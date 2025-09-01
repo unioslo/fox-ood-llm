@@ -14,6 +14,10 @@ script:
             <%- end -%>
 
             <%- if not ec_mem.blank? -%>
-                "--mem", "<%= ec_mem.to_i %>G"
+                "--mem", "<%= ec_mem.to_i %>G",
+            <%- end -%>
+
+            <%- if ec_mail_on_start -%>
+              "--mail-type=BEGIN"
             <%- end -%>
           ]

@@ -2,6 +2,7 @@
 cluster: "fox"
 
 form:
+  - ec_mail_on_start
   - auto_accounts
   - llm_model
   - ec_cpus
@@ -41,7 +42,7 @@ attributes:
      <small>
      <ul>
       <li>
-        <b>Thinking</b>: Excels at solving complex problems by systematically evaluating 
+        <b>Thinking</b>: Excels at solving complex problems by systematically evaluating
         multiple possibilities to deliver reasoned answers
       </li>
       <li>
@@ -71,3 +72,10 @@ attributes:
         data-set-ec-mem:  "12",
         data-set-ec-gpus:  "1",
       ]
+
+  ec_mail_on_start:
+    label: "Send e-mail when session starts"
+    widget: "check_box"
+    value: "false"
+    help: |
+      <small>Using the e-mail your account is registered to</small>
