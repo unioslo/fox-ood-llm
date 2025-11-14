@@ -3,18 +3,8 @@ cluster: "fox"
 
 form:
   - ec_mail_on_start
-  - auto_accounts
   - llm_model
-  - ec_cpus
-  - ec_mem
-  - ec_gpus
-
 attributes:
-
-  auto_accounts:
-    label: "Choose the Educloud project to run under:"
-    help: |
-     <small>If you are unsure, ask the project principal</small>
 
   ec_mail_on_start:
     label: "Send e-mail when session starts"
@@ -22,24 +12,6 @@ attributes:
     value: "false"
     help: |
       <small>Using the e-mail your account is registered to</small>
-
-  ec_cpus:
-    widget: "hidden_field"
-    label: "Number of CPU cores:"
-    cacheable: false
-    value: "8"
-
-  ec_gpus:
-    widget: "hidden_field"
-    label: "Number of GPUs:"
-    cacheable: false
-    value: "0"
-
-  ec_mem:
-    widget: "hidden_field"
-    label: "RAM (in GB):"
-    cacheable: false
-    value: "8"
 
   llm_model:
     label: "Large Language Model configuration"

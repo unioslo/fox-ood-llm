@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
+#
+set -x
 
 # Benchmark info
 echo "TIMING - Starting main script at: $(date)"
 
 # Set working directory to home directory
 cd "${HOME}"
-
-# Purge the module environment to avoid conflicts
-module purge
 
 # Benchmark info
 echo "TIMING - Starting llama.cpp at: $(date)"
@@ -16,15 +15,12 @@ echo "TIMING - Starting llama.cpp at: $(date)"
 
 llm_model=<%= context.llm_model -%>
 
-echo $llm_model
-echo $host
+export num_cpus=20
+echo MODEL: $llm_model
+echo HOST $host
 
-num_cpus=<%= context.ec_cpus -%>
-
-
-oodllm_aux_version=20250817_d1ab147
-
-oodllm_aux_dir=/cluster/opt/OOD/ood-llm-aux/${oodllm_aux_version}
+export LD_LIBRARY_PATH=/opt/ood-llm-aux/dev/llama.cpp/current/build_gpu/bin/:$LD_LIBRARY_PATH
+export oodllm_aux_dir=/opt/ood-llm-aux/dev
 
 echo "Starting proxy..."
 oodproxy=${oodllm_aux_dir}/oodproxy/oodproxy

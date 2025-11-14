@@ -2,22 +2,15 @@ batch_connect:
   template: "basic"
 
 script:
-  job_name: "OOD Llama.cpp"
+  job_name: "DGX OOD Llama.cpp"
   native: [
+            "-A", "ec01",
             "--time=01:30:00",
-            "-c", "<%= ec_cpus.blank?  ? 1 : ec_cpus.to_i %>",
-           <%- if ec_gpus.to_i > 0 -%>
-              "--partition=accel",
-              "--gpus=<%= ec_gpus.to_i %>",
-            <%- else -%>
-              "--partition=normal",
-            <%- end -%>
-
-            <%- if not ec_mem.blank? -%>
-              "--mem", "<%= ec_mem.to_i %>G",
-            <%- end -%>
-
-            <%- if ec_mail_on_start -%>
+            "-c", "20",
+            "--partition=dgx_spark",
+            "--gpus=gb10:1",
+            "--mem", "110G",
+            <%- if ec_mail_on_start.to_s == "1" -%>
               "--mail-type=BEGIN",
             <%- end -%>
           ]
