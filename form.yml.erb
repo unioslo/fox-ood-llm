@@ -4,10 +4,14 @@ cluster: "fox"
 form:
   - ec_mail_on_start
   - auto_accounts
+  - model_source
   - llm_model
+  - model_path
+  - global_fox_alacarte
   - ec_cpus
   - ec_mem
   - ec_gpus
+  - display_info
 
 attributes:
 
@@ -15,6 +19,16 @@ attributes:
     label: "Choose the Educloud project to run under:"
     help: |
      <small>If you are unsure, ask the project principal</small>
+
+  model_source:
+    label: "Model Source"
+    widget: "radio"
+    value: "predefined"
+    options:
+      - ["Predefined Models", "predefined"]
+      - ["Custom Model (Bring Your Own GGUF)", "custom"]
+    help: |
+      <small>Choose whether to use a predefined model or provide your own GGUF model URL</small>
 
   ec_mail_on_start:
     label: "Send e-mail when session starts"
@@ -24,22 +38,35 @@ attributes:
       <small>Using the e-mail your account is registered to</small>
 
   ec_cpus:
-    widget: "hidden_field"
+    widget: "number_field"
     label: "Number of CPU cores:"
-    cacheable: false
-    value: "8"
+    value: "1"
+    required: true
 
   ec_gpus:
-    widget: "hidden_field"
+    widget: "number_field"
     label: "Number of GPUs:"
-    cacheable: false
     value: "0"
+    required: true
 
   ec_mem:
-    widget: "hidden_field"
+    widget: "number_field"
     label: "RAM (in GB):"
-    cacheable: false
-    value: "8"
+    value: "1"
+    required: true
+
+  model_path:
+    label: "Model Path"
+    value: ""
+    required: true
+    help: "<small>Absolute path to a local .gguf file.</small>"
+    display: false
+
+  display_info:
+    widget: "hidden_field"
+    label: "Model Configuration"
+    value: "gpt-oss_20b_gpu"
+    display: true
 
   llm_model:
     label: "Large Language Model configuration"
@@ -59,7 +86,7 @@ attributes:
      <div class="alert text-muted small">
        <strong>Disclaimer:</strong> Please note that as with all LLMs, generated text can contain errors or inaccuracies. Please read more about limitations on our <a href="https://www.uio.no/tjenester/it/ki/gpt-uio/hjelp/gpt-begrensninger.html" target="_blank">guidance pages</a>.
      </div>
-    display: true
+    display: false
     options:
     - [
         "[GPU] Thinking (GPT-OSS 20B)", "gpt-oss_20b_gpu",
