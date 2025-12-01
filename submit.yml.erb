@@ -7,8 +7,32 @@ script:
             "--time=01:30:00",
             "-c", "<%= ec_cpus.blank?  ? 1 : ec_cpus.to_i %>",
            <%- if ec_gpus.to_i > 0 -%>
-              "--partition=accel",
-              "--gpus=<%= ec_gpus.to_i %>",
+              <%- case global_fox_alacarte -%>
+                <%- when 'RTX30' -%>
+                  "--partition=accel",
+                  "--gres=gpu:rtx30:<%= ec_gpus.to_i %>",
+                <%- when 'A100-40' -%>
+                  "--partition=accel",
+                  "--gres=gpu:a100:<%= ec_gpus.to_i %>",
+                <%- when 'A100-80' -%>
+                  "--partition=accel",
+                  "--gres=gpu:a100_80:<%= ec_gpus.to_i %>",
+                <%- when 'A40' -%>
+                  "--partition=accel",
+                  "--gres=gpu:a40",
+                <%- when 'L40S' -%>
+                  "--partition=accel",
+                  "--gres=gpu:l40s:<%= ec_gpus.to_i %>",
+                <%- when 'H100NV' -%>
+                  "--partition=accel",
+                  "--gres=gpu:h100nv:<%= ec_gpus.to_i %>",
+                <%- when 'MIG' -%>
+                  "--partition=mig",
+                  "-G", "<%= ec_gpus.to_i %>",
+                <%- else -%>
+                  "--partition=accel",
+                  "--gpus=<%= ec_gpus.to_i %>",
+                <%- end -%>
             <%- else -%>
               "--partition=normal",
             <%- end -%>
