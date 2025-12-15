@@ -18,60 +18,43 @@ model_path="<%= context.model_path %>"
 num_cpus=<%= context.ec_cpus %>
 num_gpus=<%= context.ec_gpus.to_i %>
 
-echo "Model source: ${model_source}"
+echo "Model Source: ${model_source}"
+echo "Model: ${llm_model}"
+echo "Model Path: ${model_path}"
 echo "Host: ${host}"
 echo "CPUs: ${num_cpus}"
 echo "GPUs: ${num_gpus}"
 
-oodllm_aux_version=20250817_d1ab147
+oodllm_aux_version=20251207_1b800bb
 oodllm_aux_dir=/cluster/opt/OOD/ood-llm-aux/${oodllm_aux_version}
 llamacpp_socket=/tmp/llamacpp.sock
 
 echo "Starting proxy..."
 oodproxy=${oodllm_aux_dir}/oodproxy/oodproxy
 
+# Simple if-else: custom or predefined
 if [[ "${model_source}" == "custom" ]]; then
-  if [[ ! -f "${model_path}" ]]; then
-    echo "ERROR: Model file not found: ${model_path}"
-    exit 1
-  fi
-  
-  llamacpp_dir=${oodllm_aux_dir}/llama.cpp/current/
+  # Custom model path
+  module load CUDA/12.6.0
   module load GLib/2.80.4-GCCcore-13.3.0
   
-  # Check
-  if [[ -n "${CUDA_VISIBLE_DEVICES}" ]] || [[ -n "${SLURM_GPUS}" ]] || [[ ${num_gpus} -gt 0 ]] 2>/dev/null; then
-    module load CUDA/12.6.0
+  llamacpp_dir=${oodllm_aux_dir}/llama.cpp/current/
+  
+  # GPU or CPU build
+  if [[ ${num_gpus} -gt 0 ]]; then
     llamacpp_srv=${llamacpp_dir}build_gpu/bin/llama-server
-    echo "CUDA_VISIBLE_DEVICES: ${CUDA_VISIBLE_DEVICES:-not set}"
-    echo "SLURM_GPUS: ${SLURM_GPUS:-not set}"
-    echo "SLURM_JOB_GPUS: ${SLURM_JOB_GPUS:-not set}"
-    
-    if command -v nvidia-smi &> /dev/null; then
-      echo "Allocated GPU(s):"
-      nvidia-smi --query-gpu=index,name,memory.total --format=csv,noheader
-    fi
   else
     llamacpp_srv=${llamacpp_dir}build_cpu/bin/llama-server
-    echo "Using CPU-only mode"
-    echo "No GPUs detected"
   fi
   
-  if [[ ! -x "${llamacpp_srv}" ]]; then
-    echo "ERROR: llama-server binary not found: ${llamacpp_srv}"
-    exit 1
-  fi
-  
-  echo "Using llama-server: ${llamacpp_srv}"
-  
-  # custom model
   ${oodproxy} --listen ${host}:${port} \
               --ipv4-range "193.156.40.0/22" \
               --ipv6-range "2001:700:5800::/41" \
-              --model-script "${llamacpp_srv} --model ${model_path} --ctx-size 4096 --threads ${num_cpus} --host ${llamacpp_socket} --jinja --prio 3 --cache-reuse 256"
+              --model-script "${llamacpp_srv} --model ${model_path} --threads ${num_cpus} --host ${llamacpp_socket}"
 else
+  # Predefined model
+  module load CUDA/12.6.0
   
-  # Use existing runllm.sh for predefined models
   ${oodproxy} --listen ${host}:${port} \
               --ipv4-range "193.156.40.0/22" \
               --ipv6-range "2001:700:5800::/41" \

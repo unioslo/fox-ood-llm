@@ -7,11 +7,12 @@ form:
   - model_source
   - llm_model
   - model_path
-  - global_fox_alacarte
+  - resource_preset
+  - custom_time
+  - custom_minutes
   - ec_cpus
   - ec_mem
   - ec_gpus
-  - display_info
 
 attributes:
 
@@ -20,16 +21,6 @@ attributes:
     help: |
      <small>If you are unsure, ask the project principal</small>
 
-  model_source:
-    label: "Model Source"
-    widget: "radio"
-    value: "predefined"
-    options:
-      - ["Predefined Models", "predefined"]
-      - ["Custom Model (Bring Your Own GGUF)", "custom"]
-    help: |
-      <small>Choose whether to use a predefined model or provide your own GGUF model file</small>
-
   ec_mail_on_start:
     label: "Send e-mail when session starts"
     widget: "check_box"
@@ -37,36 +28,134 @@ attributes:
     help: |
       <small>Using the e-mail your account is registered to</small>
 
-  ec_cpus:
-    widget: "number_field"
-    label: "Number of CPU cores:"
-    value: "1"
-    required: true
-
-  ec_gpus:
-    widget: "number_field"
-    label: "Number of GPUs:"
-    value: "0"
-    required: true
-
-  ec_mem:
-    widget: "number_field"
-    label: "RAM (in GB):"
-    value: "1"
-    required: true
+  model_source:
+    label: "Model Source"
+    widget: "radio"
+    value: "predefined"
+    options:
+      - ["Predefined Models", "predefined"]
+      - ["Custom Model", "custom"]
 
   model_path:
-    label: "Model Path"
+    label: "Custom Model Path"
+    widget: "text_field"
     value: ""
-    required: true
-    help: "<small>Absolute path to a local .gguf file.</small>"
-    display: false
+    help: |
+      <p>Full path to your .gguf model file</p>
+      <p><small>Note: This app uses llama.cpp as the backend. Only llama.cpp-compatible models (typically in GGUF format) are supported. More details at: <a href="https://github.com/ggml-org/llama.cpp?tab=readme-ov-file#obtaining-and-quantizing-models" target="_blank">Obtaining and Quantizing Models</a></small></p>
 
-  display_info:
+  resource_preset:
+    label: "Resource Configuration"
+    widget: "select"
+    value: "small"
+    help: "Select the resource configuration for your custom model"
+    options:
+      - [
+          "Small (8 cores, 16 GB RAM)", "small",
+          data-set-ec-cpus: "8",
+          data-set-ec-mem: "16",
+          data-set-ec-gpus: "0",
+          data-set-ec-gpu_type: "rtx3090",
+        ]
+      - [
+          "Medium (16 cores, 32 GB RAM)", "medium",
+          data-set-ec-cpus: "16",
+          data-set-ec-mem: "32",
+          data-set-ec-gpus: "0",
+          data-set-ec-gpu_type: "none",
+        ]
+      - [
+          "Large (32 cores, 64 GB RAM)", "large",
+          data-set-ec-cpus: "32",
+          data-set-ec-mem: "64",
+          data-set-ec-gpus: "0",
+          data-set-ec-gpu_type: "none",
+        ]
+      - [
+          "GPU (1 x NVIDIA RTX3090 24GB, 24 CPU cores, 64GB RAM)", "rtx3090",
+          data-set-ec-cpus: "24",
+          data-set-ec-mem: "64",
+          data-set-ec-gpus: "1",
+          data-set-ec-gpu_type: "rtx3090",
+        ]
+      - [
+          "GPU (1 x Nvidia A100 40 GB, 24 CPU cores, 250GB RAM)", "A100-40",
+          data-set-ec-cpus: "24",
+          data-set-ec-mem: "250",
+          data-set-ec-gpus: "1",
+          data-set-ec-gpu_type: "A100-40"
+        ]
+      - [
+        "GPU (1 x Nvidia A100 80 GB, 24 CPU cores, 250GB RAM)", "A100-80",
+          data-set-ec-cpus: "24",
+          data-set-ec-mem: "250",
+          data-set-ec-gpus: "1",
+          data-set-ec-gpu_type: "A100-80"
+        ]
+      - [
+      "GPU (1 x Nvidia A40 40 GB, 24 CPU cores, 250 GB RAM)", "A40",
+          data-set-ec-cpus: "24",
+          data-set-ec-mem: "250",
+          data-set-ec-gpus: "1",
+          data-set-ec-gpu_type: "A40"
+        ]
+      - [
+      "GPU (1 x Nvidia L40S 40 GB, 32 CPU cores, 250 GB RAM)", "L40S",
+          data-set-ec-cpus: "32",
+          data-set-ec-mem: "250",
+          data-set-ec-gpus: "1",
+          data-set-ec-gpu_type: "L40S"
+        ]
+      - [
+      "GPU (1 x Nvidia H100 NVLink 100 GB, 32 CPU cores, 500 GB RAM)", "H100NV",
+          data-set-ec-cpus: "32",
+          data-set-ec-mem: "500 ",
+          data-set-ec-gpus: "1",
+          data-set-ec-gpu_type: "H100NV"
+        ]
+      - [
+      "GPU (1 x Nvidia MIG 20G VRAM, 24 CPU cores, 100 GB RAM)", "MIG",
+          data-set-ec-cpus: "24",
+          data-set-ec-mem: "100",
+          data-set-ec-gpus: "1",
+          data-set-ec-gpu_type: "MIG"
+        ] 
+  
+  custom_time:
+    label: "Runtime (hours)"
+    widget: "number_field"
+    value: "1"
+    min: 0
+    max: 72
+    step: 1
+    help: "Specify how many hours the custom model should run"
+
+  custom_minutes:
+    label: "Runtime (minutes)"
+    widget: "number_field"
+    value: "0"
+    min: 0
+    max: 59
+    step: 1
+    help: "Specify how many minutes the custom model should run (0-59)"
+
+  ec_cpus:
     widget: "hidden_field"
-    label: "Model Configuration"
-    value: "gpt-oss_20b_gpu"
-    display: true
+    label: "Number of CPU cores:"
+    cacheable: false
+    value: "2"
+
+  ec_gpus:
+    widget: "hidden_field"
+    label: "Number of GPUs:"
+    cacheable: false
+    value: "1"
+
+  ec_mem:
+    widget: "hidden_field"
+    label: "RAM (in GB):"
+    cacheable: false
+    value: "32"
 
   llm_model:
     label: "Large Language Model configuration"
@@ -86,7 +175,7 @@ attributes:
      <div class="alert text-muted small">
        <strong>Disclaimer:</strong> Please note that as with all LLMs, generated text can contain errors or inaccuracies. Please read more about limitations on our <a href="https://www.uio.no/tjenester/it/ki/gpt-uio/hjelp/gpt-begrensninger.html" target="_blank">guidance pages</a>.
      </div>
-    display: false
+    display: true
     options:
     - [
         "[GPU] Thinking (GPT-OSS 20B)", "gpt-oss_20b_gpu",
