@@ -34,7 +34,12 @@ oodproxy=${oodllm_aux_dir}/oodproxy/oodproxy
 
 # Simple if-else: custom or predefined
 if [[ "${model_source}" == "custom" ]]; then
-  # Custom model path
+
+  if [[ ! -f "${model_path}" ]]; then
+    echo "ERROR: Model file not found: ${model_path}"
+    exit 1
+  fi
+  
   module load CUDA/12.6.0
   module load GLib/2.80.4-GCCcore-13.3.0
   
