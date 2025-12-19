@@ -4,20 +4,55 @@ batch_connect:
 script:
   job_name: "OOD Llama.cpp"
   native: [
-            "--time=01:30:00",
-            "-c", "<%= ec_cpus.blank?  ? 1 : ec_cpus.to_i %>",
-           <%- if ec_gpus.to_i > 0 -%>
-              "--partition=accel",
-              "--gpus=<%= ec_gpus.to_i %>",
-            <%- else -%>
-              "--partition=normal",
-            <%- end -%>
+    <%- if model_source.to_s == "custom" -%>
+      <%- hours = custom_time.blank? ? 1 : custom_time.to_i -%>
+      <%- minutes = custom_minutes.blank? ? 0 : custom_minutes.to_i -%>
+      "--time=<%= sprintf('%02d:%02d:00', hours, minutes) %>",
+    <%- else -%>
+      "--time=01:30:00",
+    <%- end -%>
+    <%- if model_source.to_s == "predefined" -%>
+      "--cpus-per-task=4",
+      "--mem=<%= ec_mem.blank? ? 32 : ec_mem.to_i %>G",
+      "--partition=accel",
+      "--gpus=1",
+    <%- else -%>
+      "--cpus-per-task=<%= ec_cpus.to_i %>",
+      "--mem=<%= ec_mem.to_i %>G",
+      <%- gpu = resource_preset.to_s -%>
+      <%- case gpu -%>
+        <%- when "rtx3090" -%>
+          "--partition=accel",
+          "--gres=gpu:rtx30:1",
+        <%- when "A100-40" -%>
+          "--partition=accel",
+          "--gres=gpu:a100:1",
+        <%- when "A100-80" -%>
+          "--partition=accel",
+          "--gres=gpu:a100_80:1",
+        <%- when "A40" -%>
+          "--partition=accel",
+          "--gres=gpu:a40:1",
+        <%- when "L40S" -%>
+          "--partition=accel",
+          "--gres=gpu:l40s:1",
+        <%- when "H100NV" -%>
+          "--partition=accel",
+          "--gres=gpu:h100nv:1",
+        <%- when "MIG" -%>
+          "--partition=mig",
+          "-G",
+          "<%= ec_gpus.to_i %>",
+        <%- else -%>
+          "--partition=normal",
+      <%- end -%>
 
-            <%- if not ec_mem.blank? -%>
-              "--mem", "<%= ec_mem.to_i %>G",
-            <%- end -%>
+      <%- if !ec_mem.blank? -%>
+        "--mem", "<%= ec_mem.to_i %>G",
+      <%- end -%>
 
-            <%- if ec_mail_on_start.to_s == "1" -%>
-              "--mail-type=BEGIN",
-            <%- end -%>
-          ]
+      <%- if ec_mail_on_start.to_s == "1" -%>
+        "--mail-type=BEGIN",
+      <%- end -%>
+    <%- end -%>
+  ]

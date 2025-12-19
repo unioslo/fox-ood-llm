@@ -4,7 +4,12 @@ cluster: "fox"
 form:
   - ec_mail_on_start
   - auto_accounts
+  - model_source
   - llm_model
+  - model_path
+  - resource_preset
+  - custom_time
+  - custom_minutes
   - ec_cpus
   - ec_mem
   - ec_gpus
@@ -23,23 +28,134 @@ attributes:
     help: |
       <small>Using the e-mail your account is registered to</small>
 
+  model_source:
+    label: "Model Source"
+    widget: "radio"
+    value: "predefined"
+    options:
+      - ["Predefined Models", "predefined"]
+      - ["Custom Model", "custom"]
+
+  model_path:
+    label: "Custom Model Path"
+    widget: "text_field"
+    value: ""
+    help: |
+      <p>Full path to your .gguf model file</p>
+      <p><small>Note: This app uses llama.cpp as the backend. Only llama.cpp-compatible models (typically in GGUF format) are supported. More details at: <a href="https://github.com/ggml-org/llama.cpp?tab=readme-ov-file#obtaining-and-quantizing-models" target="_blank">Obtaining and Quantizing Models</a></small></p>
+
+  resource_preset:
+    label: "Resource Configuration"
+    widget: "select"
+    value: "small"
+    help: "Select the resource configuration for your custom model"
+    options:
+      - [
+          "Small (8 cores, 16 GB RAM)", "small",
+          data-set-ec-cpus: "8",
+          data-set-ec-mem: "16",
+          data-set-ec-gpus: "0",
+          data-set-ec-gpu_type: "rtx3090",
+        ]
+      - [
+          "Medium (16 cores, 32 GB RAM)", "medium",
+          data-set-ec-cpus: "16",
+          data-set-ec-mem: "32",
+          data-set-ec-gpus: "0",
+          data-set-ec-gpu_type: "none",
+        ]
+      - [
+          "Large (32 cores, 64 GB RAM)", "large",
+          data-set-ec-cpus: "32",
+          data-set-ec-mem: "64",
+          data-set-ec-gpus: "0",
+          data-set-ec-gpu_type: "none",
+        ]
+      - [
+          "GPU (1 x NVIDIA RTX3090 24GB, 24 CPU cores, 64GB RAM)", "rtx3090",
+          data-set-ec-cpus: "24",
+          data-set-ec-mem: "64",
+          data-set-ec-gpus: "1",
+          data-set-ec-gpu_type: "rtx3090",
+        ]
+      - [
+          "GPU (1 x Nvidia A100 40 GB, 24 CPU cores, 250GB RAM)", "A100-40",
+          data-set-ec-cpus: "24",
+          data-set-ec-mem: "250",
+          data-set-ec-gpus: "1",
+          data-set-ec-gpu_type: "A100-40"
+        ]
+      - [
+        "GPU (1 x Nvidia A100 80 GB, 24 CPU cores, 250GB RAM)", "A100-80",
+          data-set-ec-cpus: "24",
+          data-set-ec-mem: "250",
+          data-set-ec-gpus: "1",
+          data-set-ec-gpu_type: "A100-80"
+        ]
+      - [
+      "GPU (1 x Nvidia A40 40 GB, 24 CPU cores, 250 GB RAM)", "A40",
+          data-set-ec-cpus: "24",
+          data-set-ec-mem: "250",
+          data-set-ec-gpus: "1",
+          data-set-ec-gpu_type: "A40"
+        ]
+      - [
+      "GPU (1 x Nvidia L40S 40 GB, 32 CPU cores, 250 GB RAM)", "L40S",
+          data-set-ec-cpus: "32",
+          data-set-ec-mem: "250",
+          data-set-ec-gpus: "1",
+          data-set-ec-gpu_type: "L40S"
+        ]
+      - [
+      "GPU (1 x Nvidia H100 NVLink 100 GB, 32 CPU cores, 500 GB RAM)", "H100NV",
+          data-set-ec-cpus: "32",
+          data-set-ec-mem: "500 ",
+          data-set-ec-gpus: "1",
+          data-set-ec-gpu_type: "H100NV"
+        ]
+      - [
+      "GPU (1 x Nvidia MIG 20G VRAM, 24 CPU cores, 100 GB RAM)", "MIG",
+          data-set-ec-cpus: "24",
+          data-set-ec-mem: "100",
+          data-set-ec-gpus: "1",
+          data-set-ec-gpu_type: "MIG"
+        ] 
+  
+  custom_time:
+    label: "Runtime (hours)"
+    widget: "number_field"
+    value: "1"
+    min: 0
+    max: 72
+    step: 1
+    help: "Specify how many hours the custom model should run"
+
+  custom_minutes:
+    label: "Runtime (minutes)"
+    widget: "number_field"
+    value: "0"
+    min: 0
+    max: 59
+    step: 1
+    help: "Specify how many minutes the custom model should run (0-59)"
+
   ec_cpus:
     widget: "hidden_field"
     label: "Number of CPU cores:"
     cacheable: false
-    value: "8"
+    value: "2"
 
   ec_gpus:
     widget: "hidden_field"
     label: "Number of GPUs:"
     cacheable: false
-    value: "0"
+    value: "1"
 
   ec_mem:
     widget: "hidden_field"
     label: "RAM (in GB):"
     cacheable: false
-    value: "8"
+    value: "32"
 
   llm_model:
     label: "Large Language Model configuration"
